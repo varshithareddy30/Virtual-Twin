@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Virtual Twin</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #e6f7ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+    }
+
+    .chat-container {
+      background: #fff;
+      border-radius: 15px;
+      padding: 20px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #007acc;
+    }
+
+    .chat-box {
+      max-height: 400px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background: #f9f9f9;
+    }
+
+    .message {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 75%;
+      word-wrap: break-word;
+    }
+
+    .user {
+      background-color: #cce5ff;
+      color: #004085;
+      align-self: flex-end;
+      text-align: right;
+      margin-left: auto;
+    }
+
+    .twin {
+      background-color: #d4edda;
+      color: #155724;
+      align-self: flex-start;
+      text-align: left;
+      margin-right: auto;
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      background: #007acc;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button img {
+      width: 24px;
+      height: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <div class="title">🤖 Your Virtual Twin</div>
+
+    <div class="chat-box" id="chat-box">
+      {% for sender, message in chat_history %}
+        <div class="message {{ sender }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+
+    <form method="POST" class="chat-input">
+      <input type="text" name="user_input" id="user_input" placeholder="Type a message..." required>
+
+      <button type="button" onclick="startVoiceInput()">
+        <img src="{{ url_for('static', filename='mic.png') }}" alt="Mic">
+      </button>
+
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <script>
+    function startVoiceInput() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        document.getElementById('user_input').value = event.results[0][0].transcript;
+      };
+
+      recognition.onerror = function(event) {
+        alert("Voice input error: " + event.error);
+      };
+    }
+
+    const chatBox = document.getElementById('chat-box');
+    chatBox.scrollTop = chatBox.scrollHeight;
+  </script>
+
+</body>
+</html>

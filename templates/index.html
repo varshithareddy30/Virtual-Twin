@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Virtual Twin</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .background {
+      background: url('{{ url_for('static', filename='twin_start.png') }}') no-repeat center center fixed;
+      background-size: cover;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      color: white;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.8);
+      padding: 20px;
+    }
+
+    .background h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    .get-started-btn {
+      padding: 12px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background-color: #007acc;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .get-started-btn:hover {
+      background-color: #005f99;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="background">
+    <h1>Wanna chat with your twin?</h1>
+    <form action="/chat" method="get">
+      <button class="get-started-btn" type="submit">Get Started</button>
+    </form>
+  </div>
+
+</body>
+</html>
